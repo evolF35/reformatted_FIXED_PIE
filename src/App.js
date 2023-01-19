@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+
+import React, { useState } from 'react';
 import './App.css';
+import DeployJS from './pages/DeployPage';
+import PoolJS from './pages/PoolPage';
+
 
 function App() {
+  const [activeComponent, setActiveComponent] = useState('DeployJS');
+
+  const handleClick = () => {
+    setActiveComponent(activeComponent === 'DeployJS' ? 'OtherComponent' : 'DeployJS');
+  };
+
+  let component;
+  if (activeComponent === 'DeployJS') {
+    component = <DeployJS />;
+  } else {
+    component = <PoolJS />;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={handleClick}>Switch</button>
+      {/* Render the active component */}
+      {component}
+      {/* Add a button that calls the "handleClick" function when clicked */}
     </div>
   );
 }
