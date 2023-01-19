@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import ethers from 'ethers'
+import {ethers} from 'ethers'
 import deployABI from '../utils/Deploy.json'
 import claimABI from '../utils/Claim.json'
 import poolABI from '../utils/Pool.json'
