@@ -4,6 +4,8 @@ import deployABI from '../utils/Deploy.json'
 import claimABI from '../utils/Claim.json'
 import poolABI from '../utils/Pool.json'
 
+import CollapsibleTable from './Table'
+
 const PoolJS = () => {
 	let contractAddress = '0xFf408125bf10064a4518f9aDa10b0E2124FAA807';
 
@@ -335,7 +337,6 @@ for (let button of expandButtons) {
 <table className='Hidden'>
 
 <thead>
-
 			<th > Contract Address </th>
               <th >Oracle Address</th>
 
@@ -419,8 +420,12 @@ for (let button of expandButtons) {
 
 )}
 
+<CollapsibleTable />
+
 		</div>
+
 	);
+
 }
 
 export default PoolJS;
