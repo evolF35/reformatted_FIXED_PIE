@@ -422,6 +422,7 @@ for (let button of expandButtons) {
 
 <CollapsibleTable />
 
+
 		</div>
 
 	);
