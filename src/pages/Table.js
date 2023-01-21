@@ -15,40 +15,37 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {ethers} from 'ethers'
 
-function createData(modifiedTB) {
+async function createData(modifiedTB) {
 
-  console.log(modifiedTB);
-  if (!modifiedTB.zTOTBAL) return null;
+  let data = await modifiedTB;
+  if (!data.zTOTBAL) return null;
 
   return {
-    totalBalance: modifiedTB.zTOTBAL,
-    POSBalance: modifiedTB.zPOSBal,
-    NEGBalance: modifiedTB.zNEGBal,
-    SettlementPrice: modifiedTB.args[1],
-    SettlementDate: modifiedTB.args[2],
-    DecayRate: modifiedTB.args[3],
-    MaxRatio: modifiedTB.args[4],
-    MaxRatioDate: modifiedTB.args[5],
-    PastSettlementDate: modifiedTB.zPSDATE,
-    Condition: modifiedTB.zCONDITION,
-    DiscountRate: modifiedTB.zDVALUE,
-    Withdraw: modifiedTB.zWITHDRAW,
+    totalBalance: data.zTOTBAL,
+    POSBalance: data.zPOSBal,
+    NEGBalance: data.zNEGBal,
+    SettlementPrice: data.args[1],
+    SettlementDate: data.args[2],
+    DecayRate: data.args[3],
+    MaxRatio: data.args[4],
+    MaxRatioDate: data.args[5],
+    PastSettlementDate: data.zPSDATE,
+    Condition: data.zCONDITION,
+    DiscountRate: data.zDVALUE,
+    Withdraw: data.zWITHDRAW,
     details: [
       {
-        ContractAddress: modifiedTB.args[8],
-        OracleAddress: modifiedTB.transactionHash,
-        Name: modifiedTB.args[6],
-        Acronym: modifiedTB.args[7],
-        DestructionDate: modifiedTB.args[9],
-        POSAddress: modifiedTB.zPOSADD,
-        NEGAddress: modifiedTB.zNEGADD,
+        ContractAddress: data.args[8],
+        OracleAddress: data.transactionHash,
+        Name: data.args[6],
+        Acronym: data.args[7],
+        DestructionDate: data.args[9],
+        POSAddress: data.zPOSADD,
+        NEGAddress: data.zNEGADD,
       },
     ],
   };
 }
-
-
-
 
 function Row(props) {
   const { row } = props;
@@ -183,6 +180,7 @@ export default function CollapsibleTable(props) {
         <TableBody>
 {rows.map((row) => {
    const data = createData(row);
+   console.log(data);
    return data ? <Row key={data.contractAddress} row={data} /> : null;
 })}
 </TableBody>

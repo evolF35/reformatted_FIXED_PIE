@@ -70,13 +70,10 @@ const PoolJS = () => {
 
 		const tb = await contract.queryFilter("*");
 		setTb(tb);
-		console.log(tb);
-		console.log("above is tb");
+
 
 		let z = poolInfo(tb[0].args[8]);
-		console.log(z);
 
-		console.log(tb[0].args[8]);
 
 		const modifiedTb = await tb.map(async (element, index) => {
 			const zPOSBal = await getPoolInfo(tb[index].args[8]);
@@ -114,12 +111,12 @@ const PoolJS = () => {
 		  });
 
 		  setModifiedTb(modifiedTb);
-		  console.log(modifiedTb);
-		  console.log("MemePIZZA");
-		  console.log("above is modifiedTb");
+
 
 		let done = await Promise.all(modifiedTb);
 		setTb(done);
+
+		console.log(tb);
 
 		const hiddenRows = document.querySelectorAll('.Hidden');
 		for (let row of hiddenRows) {
@@ -427,7 +424,7 @@ for (let button of expandButtons) {
 
 )}
 
-<CollapsibleTable rows={modifiedTb}/>
+<CollapsibleTable rows={tb}/>
 
 		</div>
 
