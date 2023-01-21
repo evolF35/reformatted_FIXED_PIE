@@ -13,8 +13,10 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import {ethers} from 'ethers'
 
-function createData(name, calories, fat, carbs, protein, price) {
+
+/*function createData(name, calories, fat, carbs, protein, price) {
   return {
     name,
     calories,
@@ -35,11 +37,47 @@ function createData(name, calories, fat, carbs, protein, price) {
       },
     ],
   };
+}*/
+
+function createData(modifiedTB) {
+
+  console.log(modifiedTB);
+
+  return {
+    totalBalance: modifiedTB.zTOTBAL,
+    POSBalance: modifiedTB.zPOSBal,
+    NEGBalance: modifiedTB.zNEGBal,
+    SettlementPrice: modifiedTB.args[1],
+    SettlementDate: modifiedTB.args[2],
+    DecayRate: modifiedTB.args[3],
+    MaxRatio: modifiedTB.args[4],
+    MaxRatioDate: modifiedTB.args[5],
+    PastSettlementDate: modifiedTB.zPSDATE,
+    Condition: modifiedTB.zCONDITION,
+    DiscountRate: modifiedTB.zDVALUE,
+    Withdraw: modifiedTB.zWITHDRAW,
+    details: [
+      {
+        ContractAddress: modifiedTB.args[8],
+        OracleAddress: modifiedTB.transactionHash,
+        Name: modifiedTB.args[6],
+        Acronym: modifiedTB.args[7],
+        DestructionDate: modifiedTB.args[9],
+        POSAddress: modifiedTB.zPOSADD,
+        NEGAddress: modifiedTB.zNEGADD,
+      },
+    ],
+  };
 }
+
+
+
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+
+  if (!row.totalBalance) return null;
 
   return (
     <React.Fragment>
@@ -54,12 +92,21 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.name}
+          {row.totalBalance}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell align="right">{row.totalBalance}</TableCell>
+        <TableCell align="right">{row.POSBalance}</TableCell>
+        <TableCell align="right">{row.NEGBalance}</TableCell>
+        <TableCell align="right">{row.SettlementPrice}</TableCell>
+        <TableCell align="right">{row.SettlementDate}</TableCell>
+        <TableCell align="right">{row.DecayRate}</TableCell>
+        <TableCell align="right">{row.MaxRatio}</TableCell>
+        <TableCell align="right">{row.MaxRatioDate}</TableCell>
+        <TableCell align="right">{row.PastSettlementDate}</TableCell>
+        <TableCell align="right">{row.Condition}</TableCell>
+        <TableCell align="right">{row.DiscountRate}</TableCell>
+        <TableCell align="right">{row.Withdraw}</TableCell>
+
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -73,25 +120,26 @@ function Row(props) {
                   <TableRow>
                     <TableCell>Contract Address</TableCell>
                     <TableCell>Oracle Address</TableCell>
-                    <TableCell >POS address</TableCell>
-                    <TableCell > NEG address </TableCell>
-                    <TableCell > NEG address </TableCell>
-                    <TableCell > Name </TableCell>
+                    <TableCell >Name</TableCell>
                     <TableCell > Acronym </TableCell>
+                    <TableCell > DestructionDate </TableCell>
+                    <TableCell > POS Address </TableCell>
+                    <TableCell > NEG Address </TableCell>
 
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row.details.map((historyRow) => (
+                    <TableRow key={historyRow.ContractAddress}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {historyRow.ContractAddress}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+                      <TableCell>{historyRow.OracleAddress}</TableCell>
+                      <TableCell align="right">{historyRow.Name}</TableCell>
+                      <TableCell align="right">{historyRow.Acronym}</TableCell>
+                      <TableCell align="right">{historyRow.DestructionDate}</TableCell>
+                      <TableCell align="right">{historyRow.POSAddress}</TableCell>
+                      <TableCell align="right">{historyRow.NEGAddress}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -106,31 +154,36 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
+    totalBalance: PropTypes.number.isRequired,
+    POSBalance: PropTypes.number.isRequired,
+    NEGBalance: PropTypes.number.isRequired,
+    SettlementPrice: PropTypes.number.isRequired,
+    SettlementDate: PropTypes.number.isRequired,
+    DecayRate: PropTypes.number.isRequired,
+    MaxRatio: PropTypes.number.isRequired,
+    MaxRatioDate: PropTypes.number.isRequired,
+    PastSettlementDate: PropTypes.bool.isRequired,
+    Condition: PropTypes.bool.isRequired,
+    DiscountRate: PropTypes.number.isRequired,
+    Withdraw: PropTypes.bool.isRequired,
+    details: PropTypes.arrayOf(
       PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
+        ContractAddress: PropTypes.string.isRequired,
+        OracleAddress: PropTypes.string.isRequired,
+        Name: PropTypes.string.isRequired,
+        Acronym: PropTypes.string.isRequired,
+        DestructionDate: PropTypes.number.isRequired,
+        POSAddress: PropTypes.string.isRequired,
+        NEGAddress: PropTypes.string.isRequired,
       }),
     ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
   }).isRequired,
 };
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
+export default function CollapsibleTable(props) {
 
-export default function CollapsibleTable() {
+  const { rows } = props;
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -146,7 +199,7 @@ export default function CollapsibleTable() {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.name} row={row} />
+            <Row key={row.contractAddress} row={row} />
           ))}
         </TableBody>
       </Table>
