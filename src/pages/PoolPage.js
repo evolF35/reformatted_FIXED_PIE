@@ -116,7 +116,7 @@ const PoolJS = () => {
 		let done = await Promise.all(modifiedTb);
 		setTb(done);
 
-		console.log(tb);
+
 
 		const hiddenRows = document.querySelectorAll('.Hidden');
 		for (let row of hiddenRows) {
@@ -424,7 +424,7 @@ for (let button of expandButtons) {
 
 )}
 
-<CollapsibleTable rows={tb}/>
+{ tb && <CollapsibleTable rows={tb}/> }
 
 		</div>
 

@@ -15,21 +15,21 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {ethers} from 'ethers'
 
-async function createData(modifiedTB) {
+function createData(modifiedTB) {
 
-  let data = await modifiedTB;
+  let data = modifiedTB;
   if (!data.zTOTBAL) return null;
 
   return {
     totalBalance: data.zTOTBAL,
     POSBalance: data.zPOSBal,
     NEGBalance: data.zNEGBal,
-    SettlementPrice: data.args[1],
-    SettlementDate: data.args[2],
-    DecayRate: data.args[3],
-    MaxRatio: data.args[4],
-    MaxRatioDate: data.args[5],
-    PastSettlementDate: data.zPSDATE,
+    SettlementPrice: data.args[1].toString(),
+    SettlementDate: data.args[2].toString(),
+    DecayRate: data.args[3].toString(),
+    MaxRatio: data.args[4].toString(),
+    MaxRatioDate: data.args[5].toString(),
+    PastSettlementDate: data.zPSDATE.toString(),
     Condition: data.zCONDITION,
     DiscountRate: data.zDVALUE,
     Withdraw: data.zWITHDRAW,
@@ -39,7 +39,7 @@ async function createData(modifiedTB) {
         OracleAddress: data.transactionHash,
         Name: data.args[6],
         Acronym: data.args[7],
-        DestructionDate: data.args[9],
+        DestructionDate: data.args[9].toString(),
         POSAddress: data.zPOSADD,
         NEGAddress: data.zNEGADD,
       },
@@ -48,7 +48,8 @@ async function createData(modifiedTB) {
 }
 
 function Row(props) {
-  const { row } = props;
+  let row = props;
+  console.log(row);
   const [open, setOpen] = React.useState(false);
 
   if (!row) return null;
@@ -66,20 +67,20 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.totalBalance}
+          {row.row.totalBalance}
         </TableCell>
-        <TableCell align="right">{row.totalBalance}</TableCell>
-        <TableCell align="right">{row.POSBalance}</TableCell>
-        <TableCell align="right">{row.NEGBalance}</TableCell>
-        <TableCell align="right">{row.SettlementPrice}</TableCell>
-        <TableCell align="right">{row.SettlementDate}</TableCell>
-        <TableCell align="right">{row.DecayRate}</TableCell>
-        <TableCell align="right">{row.MaxRatio}</TableCell>
-        <TableCell align="right">{row.MaxRatioDate}</TableCell>
-        <TableCell align="right">{row.PastSettlementDate}</TableCell>
-        <TableCell align="right">{row.Condition}</TableCell>
-        <TableCell align="right">{row.DiscountRate}</TableCell>
-        <TableCell align="right">{row.Withdraw}</TableCell>
+        <TableCell align="right">{row.row.totalBalance}</TableCell>
+        <TableCell align="right">{row.row.POSBalance}</TableCell>
+        <TableCell align="right">{row.row.NEGBalance}</TableCell>
+        <TableCell align="right">{row.row.SettlementPrice}</TableCell>
+        <TableCell align="right">{row.row.SettlementDate}</TableCell>
+        <TableCell align="right">{row.row.DecayRate}</TableCell>
+        <TableCell align="right">{row.row.MaxRatio}</TableCell>
+        <TableCell align="right">{row.row.MaxRatioDate}</TableCell>
+        <TableCell align="right">{row.row.PastSettlementDate}</TableCell>
+        <TableCell align="right">{row.row.Condition}</TableCell>
+        <TableCell align="right">{row.row.DiscountRate}</TableCell>
+        <TableCell align="right">{row.row.Withdraw}</TableCell>
 
       </TableRow>
       <TableRow>
@@ -103,19 +104,32 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.details.map((historyRow) => (
-                    <TableRow key={historyRow.ContractAddress}>
+
+                <TableRow >
+                      <TableCell component="th" scope="row">{row.row.details[0].ContractAddress}</TableCell>
+                      <TableCell>{row.row.details[0].OracleAddress}</TableCell>
+                      <TableCell align="right">{row.row.details[0].Name}</TableCell>
+                      <TableCell align="right">{row.row.details[0].Acronym}</TableCell>
+                      <TableCell align="right">{row.row.details[0].DestructionDate}</TableCell>
+                      <TableCell align="right">{row.row.details[0].POSAddress}</TableCell>
+                      <TableCell align="right">{row.row.details[0].NEGAddress}</TableCell>
+
+                  </TableRow>
+
+
+                  {/* {row.row.details.map((historyRow) => (
+                    <TableRow key={historyRow.row.ContractAddress}>
                       <TableCell component="th" scope="row">
-                        {historyRow.ContractAddress}
+                        {historyRow.row.ContractAddress}
                       </TableCell>
-                      <TableCell>{historyRow.OracleAddress}</TableCell>
-                      <TableCell align="right">{historyRow.Name}</TableCell>
-                      <TableCell align="right">{historyRow.Acronym}</TableCell>
-                      <TableCell align="right">{historyRow.DestructionDate}</TableCell>
-                      <TableCell align="right">{historyRow.POSAddress}</TableCell>
-                      <TableCell align="right">{historyRow.NEGAddress}</TableCell>
+                      <TableCell>{historyRow.row.OracleAddress}</TableCell>
+                      <TableCell align="right">{historyRow.row.Name}</TableCell>
+                      <TableCell align="right">{historyRow.row.Acronym}</TableCell>
+                      <TableCell align="right">{historyRow.row.DestructionDate}</TableCell>
+                      <TableCell align="right">{historyRow.row.POSAddress}</TableCell>
+                      <TableCell align="right">{historyRow.row.NEGAddress}</TableCell>
                     </TableRow>
-                  ))}
+                  ))} */}
                 </TableBody>
               </Table>
             </Box>
@@ -155,7 +169,8 @@ Row.propTypes = {
 
 export default function CollapsibleTable(props) {
 
-  const { rows } = props;
+  let florins = props.rows;
+  //console.log(florins);
 
   return (
     <TableContainer component={Paper}>
@@ -178,13 +193,14 @@ export default function CollapsibleTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-{rows.map((row) => {
+{florins.map((row) => {
    const data = createData(row);
-   console.log(data);
    return data ? <Row key={data.contractAddress} row={data} /> : null;
 })}
+
 </TableBody>
       </Table>
     </TableContainer>
   );
 }
+
