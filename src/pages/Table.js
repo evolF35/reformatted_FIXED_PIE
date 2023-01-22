@@ -66,9 +66,6 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.row.totalBalance}
-        </TableCell>
         <TableCell align="right">{row.row.totalBalance}</TableCell>
         <TableCell align="right">{row.row.POSBalance}</TableCell>
         <TableCell align="right">{row.row.NEGBalance}</TableCell>
@@ -116,20 +113,6 @@ function Row(props) {
 
                   </TableRow>
 
-
-                  {/* {row.row.details.map((historyRow) => (
-                    <TableRow key={historyRow.row.ContractAddress}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.row.ContractAddress}
-                      </TableCell>
-                      <TableCell>{historyRow.row.OracleAddress}</TableCell>
-                      <TableCell align="right">{historyRow.row.Name}</TableCell>
-                      <TableCell align="right">{historyRow.row.Acronym}</TableCell>
-                      <TableCell align="right">{historyRow.row.DestructionDate}</TableCell>
-                      <TableCell align="right">{historyRow.row.POSAddress}</TableCell>
-                      <TableCell align="right">{historyRow.row.NEGAddress}</TableCell>
-                    </TableRow>
-                  ))} */}
                 </TableBody>
               </Table>
             </Box>
@@ -182,6 +165,7 @@ export default function CollapsibleTable(props) {
             <TableCell align="right"> POS Balance </TableCell>
             <TableCell align="right"> NEG Balance </TableCell>
             <TableCell align="right"> Settlement Price </TableCell>
+            <TableCell align="right"> Settlement Date </TableCell>
             <TableCell align="right"> Decay Rate </TableCell>
             <TableCell align="right"> Max Ratio </TableCell>
             <TableCell align="right"> Max Ratio Date </TableCell>
