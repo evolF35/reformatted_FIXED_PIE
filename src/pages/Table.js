@@ -47,6 +47,7 @@ function createData(modifiedTB) {
   };
 }
 
+
 function Row(props) {
   let row = props;
   console.log(row);
@@ -97,6 +98,21 @@ function Row(props) {
                     <TableCell > DestructionDate </TableCell>
                     <TableCell > POS Address </TableCell>
                     <TableCell > NEG Address </TableCell>
+
+                    <TableCell > Deposit To POS </TableCell>
+                    <TableCell > Deposit To NEG </TableCell>
+                    <TableCell > Approve POS </TableCell>
+                    <TableCell > Approve NEG </TableCell>
+
+                    <TableCell > Redeem POS</TableCell>
+                    <TableCell > Redeem NEG </TableCell>
+
+                    <TableCell > Withdraw POS </TableCell>
+                    <TableCell > Withdraw NEG </TableCell>
+
+                    <TableCell > Settle </TableCell>
+                    <TableCell >  TurnWithdrawOn </TableCell>
+                    <TableCell >  DESTRUCTION </TableCell>
 
                   </TableRow>
                 </TableHead>
